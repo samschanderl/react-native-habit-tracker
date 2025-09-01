@@ -1,75 +1,90 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import Add from '@mui/icons-material/AccessAlarm';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function Index() {
 
-export default function HomeScreen() {
+  type Habit = {
+    id: string,
+    text: string,
+    isFinished: boolean,
+    category: string,
+    color: string
+  }
+
+  const [habits, setHabits] = useState<Habit[]>([]);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* CHART PLACEHOLDER AREA */}
+      <View>
+        <View style={styles.chartPlaceholder}></View>
+      </View>
+      {/* HABIT TRACKER ITEMS */}
+      <View>
+        <Text style={styles.tabHeading}>
+          <Pressable style={styles.tabHeadingText}><Text style={styles.tabHeadingTextActive}>Open</Text></Pressable>
+          <Pressable style={styles.tabHeadingText}><Text>Done</Text></Pressable>
+          <Pressable style={styles.tabHeadingText}><Text>All</Text></Pressable>
+        </Text>
+      </View>
+      {/* ADD BUTTON */}
+      <View>
+        <Pressable 
+          style={styles.btnAdd}
+          onPress={() => {}}
+          >
+          <Image 
+          source={require('../../assets/images/icon_plus_dark.png')}
+          style={styles.iconPlusSign}
+          />
+          </Pressable>
+          <Text>{}</Text>
+      </View>
+    </View>
   );
 }
 
+
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  chartPlaceholder: {
+    backgroundColor: '#8ee68a',
+    height: 150,
+    width: 150,
+    borderRadius: 100
+  },
+  btnAdd: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
+    borderRadius: 100,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  btnAddText: {
+    fontSize: 30
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  tabHeading: {
+    display: 'flex',
   },
-});
+  tabHeadingText: {
+    paddingRight: 20,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  tabHeadingTextActive: {
+    fontWeight: 'bold'
+  },
+  iconPlusSign: {
+    width: 30,
+    height: 30,
+    color: 'black'
+  }
+})
