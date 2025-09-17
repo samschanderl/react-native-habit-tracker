@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 
-export function ProgressScreen() {
+export default function ProgressScreen() {
     return (
             <Text>Progress Screen</Text>
     )
