@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image, FlatList, ScrollView, Modal } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, FlatList, ScrollView, Modal, ToastAndroid } from "react-native";
 import Add from '@mui/icons-material/AccessAlarm';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -8,10 +8,15 @@ import SlideInModal from '../components/SlideInModal';
 import Button from "../components/Button";
 import { useModal } from "../context/ModalContext";
 import ModalHabitInput from "./modals/ModalHabitInput";
+import { useDate } from "../context/DateContext";
+import Toast from 'react-native-toast-message';
+
 export default function Index() {
 
-  type HabitCategory = "personal" | "career" | "health" | "family"
-  type HabitColor = "red" | "blue" | "green" | "orange" | "yellow"
+  type HabitCategory = "personal" | "career" | "health" | "family";
+  type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
+
+  const {selectedDates} = useDate();
 
   type Habit = {
     id: string,
@@ -32,6 +37,13 @@ export default function Index() {
     })
   }
 
+  const renderDayTabs = () => {
+
+    return (
+      <Button><Text>Test</Text></Button>
+    )
+  }
+
   useEffect(() => {
     let initialHabit: Habit = {
       id: 'initial',
@@ -44,17 +56,22 @@ export default function Index() {
       setHabits([initialHabit]);
       initialRender.current = false;
     }
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1}} edges={{bottom: 'off'}}>
     <View
       style={styles.outerContainer}
+
     >
-      {/* CHART PLACEHOLDER AREA */}
+      {/* DAY SELECTION */}
       <View>
-        <View style={styles.chartPlaceholder}></View>
+        {renderDayTabs()}
       </View>
+      {/* CHART PLACEHOLDER AREA */}
+      {/* <View>
+        <View style={styles.chartPlaceholder}></View>
+      </View> */}
       {/* HABIT TRACKER HEADING MENU */}
       <View>
         <Text style={styles.tabHeading}>
@@ -93,6 +110,7 @@ export default function Index() {
           <ModalHabitInput />
         </SlideInModal>
       </View>
+      <Toast/>
     </SafeAreaView>
   );
 }
