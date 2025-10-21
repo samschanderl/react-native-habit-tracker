@@ -10,6 +10,8 @@ import { useModal } from "../context/ModalContext";
 import ModalHabitInput from "./modals/ModalHabitInput";
 import { useDate } from "../context/DateContext";
 import Toast from 'react-native-toast-message';
+import { Background } from "@react-navigation/elements";
+import TabHeading from "../components/TabHeading";
 
 export default function Index() {
 
@@ -73,13 +75,14 @@ export default function Index() {
         <View style={styles.chartPlaceholder}></View>
       </View> */}
       {/* HABIT TRACKER HEADING MENU */}
-      <View>
-        <Text style={styles.tabHeading}>
-          <Pressable style={styles.tabHeadingText}><Text style={styles.tabHeadingTextActive}>Open</Text></Pressable>
-          <Pressable style={styles.tabHeadingText}><Text>Done</Text></Pressable>
-          <Pressable style={styles.tabHeadingText}><Text>All</Text></Pressable>
-        </Text>
-      </View>
+      <TabHeading 
+        elements={["Open", "Done", "All"]}
+      />
+      {/* <View style={styles.tabHeading}>
+        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText, styles.tabHeadingTextActive]}>Open</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
+        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText]}>Done</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
+        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText]}>All</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
+      </View> */}
       {/* HABIT TRACKER ITEMS */}
       <View
         style={
@@ -123,6 +126,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: 'relative',
     paddingHorizontal: 0,
+    marginHorizontal: 20
     // backgroundColor: 'red'
   },
   chartPlaceholder: {
@@ -148,20 +152,8 @@ const styles = StyleSheet.create({
     right: 0,
     marginBottom: 10
   },
-  tabHeading: {
-    display: 'flex',
-  },
-  tabHeadingText: {
-    paddingRight: 20,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  tabHeadingTextActive: {
-    fontWeight: 'bold'
-  },
   habitItem: {
     padding: 20,
-    margin: 20,
     borderRadius: 10,
     backgroundColor: 'white'
   },
