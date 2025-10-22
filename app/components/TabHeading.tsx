@@ -15,6 +15,7 @@ const TabHeading = ({elements}: TabHeadingProps) => {
       if (!id) return;
       console.warn('setting active tab id:', id);
       setActiveTab(id);
+      // TODO - filter tabs
     }
 
     return (

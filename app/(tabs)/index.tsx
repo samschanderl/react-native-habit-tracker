@@ -12,6 +12,9 @@ import { useDate } from "../context/DateContext";
 import Toast from 'react-native-toast-message';
 import { Background } from "@react-navigation/elements";
 import TabHeading from "../components/TabHeading";
+import { useHabits } from "../context/HabitContext";
+import HabitItem from "../components/HabitItem";
+
 
 export default function Index() {
 
@@ -19,6 +22,7 @@ export default function Index() {
   type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
   const {selectedDates} = useDate();
+  const {habits} = useHabits();
 
   type Habit = {
     id: string,
@@ -28,7 +32,8 @@ export default function Index() {
     color: HabitColor
   }
 
-  const [habits, setHabits] = useState<Habit[]>([]);
+
+  // const [habits, setHabits] = useState<Habit[]>([]);
   const initialRender = useRef(true);
   const {activeModal, setActiveModal} = useModal();
 
@@ -55,7 +60,7 @@ export default function Index() {
       color: "red"
     }
     if (initialRender) {
-      setHabits([initialHabit]);
+      // setHabits([initialHabit]);
       initialRender.current = false;
     }
   }, []);
@@ -78,11 +83,6 @@ export default function Index() {
       <TabHeading 
         elements={["Open", "Done", "All"]}
       />
-      {/* <View style={styles.tabHeading}>
-        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText, styles.tabHeadingTextActive]}>Open</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
-        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText]}>Done</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
-        <Pressable style={styles.tabHeadingBtnWrapper}><Text style={[styles.tabHeadingText]}>All</Text><View style={styles.tabHeadingUnderline}></View></Pressable>
-      </View> */}
       {/* HABIT TRACKER ITEMS */}
       <View
         style={
@@ -96,7 +96,7 @@ export default function Index() {
         style={{
         }}
           data={habits}
-          renderItem={(itemData) => (<View style={styles.habitItem}><Text>{itemData.item.text}</Text></View>)}
+          renderItem={(itemData) => <HabitItem item={itemData.item} />}
         />
       {/* ADD BUTTON */}
       </View>
@@ -151,11 +151,6 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     marginBottom: 10
-  },
-  habitItem: {
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: 'white'
   },
   iconPlusSign: {
     width: 30,

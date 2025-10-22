@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 type HabitProviderProps = {
-    children: React.ReactNode
+    children: ReactNode | undefined
 }
 
 type HabitContextProps = {
@@ -11,19 +11,39 @@ type HabitContextProps = {
 type HabitCategory = "personal" | "career" | "health" | "family";
 type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
-type Habit = {
+export type Habit = {
     id: string,
     text: string,
     isFinished: boolean,
     category: HabitCategory,
-    color: HabitColor
 }
 
 const defaultHabit: Habit[] = [];
 
 const HabitContext = createContext<HabitContextProps>(defaultHabit);
 
-const HabitContextProvider = ({children}: HabitProviderProps): HabitContextProps => {
+export const HabitProvider = ({children}: HabitProviderProps): ReactNode | Promise<ReactNode> => {
+    const defaultHabits: Habit[] = [
+        {
+            id: "1", // CREATE TIMESTAMP ID
+            text: "Go to the gym",
+            isFinished: true,
+            category: "health",
+        },
+        {
+            id: "2",
+            text: "Learn a new language for 5 minutes",
+            isFinished: false,
+            category: "personal",
+        },
+        {
+            id: "3",
+            text: "Read a story to my children",
+            isFinished: false,
+            category: "family",
+        },
+    ]
+    
     const [habits, setHabits] = useState<Habit[]>([]);
 
     const addHabit = (habit: Habit): void => {
@@ -41,10 +61,15 @@ const HabitContextProvider = ({children}: HabitProviderProps): HabitContextProps
         }));
     }
 
+    useEffect(() => {
+        console.warn('setting default habits', defaultHabits);
+        setHabits([...defaultHabits]);
+    }, [])
+
     return (
         <HabitContext.Provider
-        value={
-{            habits,
+        value={{          
+            habits,
             addHabit,
             deleteHabit,
             updateHabit
