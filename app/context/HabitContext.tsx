@@ -1,11 +1,16 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 
-type HabitProviderProps = {
+type HabitProviderProps<T> = {
     children: ReactNode | undefined
 }
 
 type HabitContextProps = {
-    
+    habits: Habit[],
+    addHabit: (h: Habit) => void,
+    deleteHabit: (h: Habit) => void,
+    updateHabit: (h: Habit) => void,
+    habitStatusFilter: HabitStatusFilter[],
+    setHabitStatusFilter: React.Dispatch<React.SetStateAction<HabitStatusFilter[]>>
 }
 
 type HabitCategory = "personal" | "career" | "health" | "family";
@@ -20,9 +25,9 @@ export type Habit = {
 
 const defaultHabit: Habit[] = [];
 
-const HabitContext = createContext<HabitContextProps>(defaultHabit);
+const HabitContext = createContext<HabitContextProps>({} as HabitContextProps);
 
-export const HabitProvider = ({children}: HabitProviderProps): ReactNode | Promise<ReactNode> => {
+export const HabitProvider = ({children}: HabitProviderProps<ReactNode>) => {
     const defaultHabits: Habit[] = [
         {
             id: "1", // CREATE TIMESTAMP ID
@@ -42,7 +47,13 @@ export const HabitProvider = ({children}: HabitProviderProps): ReactNode | Promi
             isFinished: false,
             category: "family",
         },
-    ]
+    ];
+
+    const [habitStatusFilter, setHabitStatusFilter] = useState([
+        {id: "open", title: "Open", isActive: true},
+        {id: "done", title: "Done", isActive: false},
+        {id: "all", title: "All", isActive: false}
+    ])
     
     const [habits, setHabits] = useState<Habit[]>([]);
 
@@ -72,7 +83,9 @@ export const HabitProvider = ({children}: HabitProviderProps): ReactNode | Promi
             habits,
             addHabit,
             deleteHabit,
-            updateHabit
+            updateHabit,
+            habitStatusFilter, 
+            setHabitStatusFilter
         }}
         >
             {children}

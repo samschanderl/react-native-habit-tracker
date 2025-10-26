@@ -1,21 +1,28 @@
 import { View, StyleSheet, Pressable, Text, PressableProps } from "react-native";
-import { useState } from "react";
 
+interface TabHeadingElements {
+  id: string,
+  title: string,
+  isActive: boolean
+}
 
 type TabHeadingProps = PressableProps & {
-  elements: string[]
+  elements?: TabHeadingElements[],
+  setElements: React.Dispatch<React.SetStateAction<HabitStatusFilter[]>>
 }
 
 
-const TabHeading = ({elements}: TabHeadingProps) => {
-
-    const [activeTab, setActiveTab] = useState(elements[0]);
+const TabHeading = ({elements, setElements}: TabHeadingProps) => {
 
     const onPressHandler = (id: string) => {
-      if (!id) return;
+      if (!elements || !id) return;
+      let els = elements.map(el => {
+        if (el.id === id) el.isActive = true;
+        else el.isActive = false;
+        return el;
+      });
       console.warn('setting active tab id:', id);
-      setActiveTab(id);
-      // TODO - filter tabs
+      setElements([...els])
     }
 
     return (
@@ -23,10 +30,10 @@ const TabHeading = ({elements}: TabHeadingProps) => {
             {elements && elements.map(el => (
                 <Pressable 
                 style={styles.tabHeadingBtnWrapper}
-                onPress={() => onPressHandler(el)}
+                onPress={() => onPressHandler(el.id)}
                 >
-                    <Text style={[styles.tabHeadingText, activeTab === el ? styles.tabHeadingTextActive : null]}>{el}</Text>
-                    <View style={[styles.tabHeadingUnderline, activeTab === el ? styles.tabHeadingUnderlineActive : null]}></View>
+                    <Text style={[styles.tabHeadingText, el.isActive ? styles.tabHeadingTextActive : null]}>{el.title}</Text>
+                    <View style={[styles.tabHeadingUnderline, el.isActive ? styles.tabHeadingUnderlineActive : null]}></View>
                 </Pressable>
             ))}
         </View>

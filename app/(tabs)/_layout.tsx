@@ -26,7 +26,7 @@ export default function TabLayout() {
     ]
 
     return (
-        <Tabs >
+        <Tabs>
             <TabSlot/>
                 <View style={{paddingBottom: insets.bottom}}>
                     <View style={styles.tabButtonsOuter}>

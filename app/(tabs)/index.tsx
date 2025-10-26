@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image, FlatList, ScrollView, Modal, ToastAndroid } from "react-native";
-import Add from '@mui/icons-material/AccessAlarm';
+import { useEffect, useRef, } from "react";
+import { View, Text, StyleSheet, Platform, FlatList, StatusBar } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "../constants/Colors";
@@ -10,7 +9,6 @@ import { useModal } from "../context/ModalContext";
 import ModalHabitInput from "./modals/ModalHabitInput";
 import { useDate } from "../context/DateContext";
 import Toast from 'react-native-toast-message';
-import { Background } from "@react-navigation/elements";
 import TabHeading from "../components/TabHeading";
 import { useHabits } from "../context/HabitContext";
 import HabitItem from "../components/HabitItem";
@@ -22,7 +20,9 @@ export default function Index() {
   type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
   const {selectedDates} = useDate();
-  const {habits} = useHabits();
+  const {habits, habitStatusFilter, setHabitStatusFilter} = useHabits();
+
+  const [habitsTabs, setHabitTabs] = useState<string[]>()
 
   type Habit = {
     id: string,
@@ -30,18 +30,16 @@ export default function Index() {
     isFinished: boolean,
     category: HabitCategory,
     color: HabitColor
-  }
-
+  };
 
   // const [habits, setHabits] = useState<Habit[]>([]);
-  const initialRender = useRef(true);
-  const {activeModal, setActiveModal} = useModal();
+  const {setActiveModal} = useModal();
 
   const openGoalsInputModalHandler = () => {
     setActiveModal({
       selectedModal: 'habitInputModal',
       isActive: true
-    })
+    });
   }
 
   const renderDayTabs = () => {
@@ -51,22 +49,8 @@ export default function Index() {
     )
   }
 
-  useEffect(() => {
-    let initialHabit: Habit = {
-      id: 'initial',
-      text: 'Ready to add your first habit? Click the "+" button to get started.',
-      isFinished: false,
-      category: "personal",
-      color: "red"
-    }
-    if (initialRender) {
-      // setHabits([initialHabit]);
-      initialRender.current = false;
-    }
-  }, []);
-
   return (
-    <SafeAreaView style={{flex: 1}} edges={{bottom: 'off'}}>
+    <SafeAreaView style={{flex: 1}} edges={{bottom: "additive"}}>
     <View
       style={styles.outerContainer}
 
@@ -81,7 +65,8 @@ export default function Index() {
       </View> */}
       {/* HABIT TRACKER HEADING MENU */}
       <TabHeading 
-        elements={["Open", "Done", "All"]}
+      elements={habitStatusFilter}
+      setElements={setHabitStatusFilter}
       />
       {/* HABIT TRACKER ITEMS */}
       <View
@@ -126,7 +111,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: 'relative',
     paddingHorizontal: 0,
-    marginHorizontal: 20
+    marginHorizontal: 20,
+    paddingTop: StatusBar.currentHeight
     // backgroundColor: 'red'
   },
   chartPlaceholder: {

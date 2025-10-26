@@ -7,7 +7,9 @@ export default function RootLayout() {
   return (
     <HabitProvider>
       <ModalProvider>
-        <Stack >
+        <Stack 
+        screenOptions={{headerShown:false}}
+        >
           {/* <Stack.Screen name="tabs" options={{headerShown: false}} /> */}
         </Stack>
       </ModalProvider>
