@@ -1,5 +1,5 @@
-import { useEffect, useRef, } from "react";
-import { View, Text, StyleSheet, Platform, FlatList, StatusBar } from "react-native";
+import { useState, } from "react";
+import { View, Text, StyleSheet, FlatList, StatusBar } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Colors } from "../constants/Colors";
