@@ -1,11 +1,45 @@
-import {View, Text, StyleSheet} from 'react-native';
-import { Habit } from '../context/HabitContext';
+import {View, Text, StyleSheet, Touchable, Pressable} from 'react-native';
+import { Habit, useHabits } from '../context/HabitContext';
+import { Colors } from '../constants/Colors';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const HabitItem = ({item}: {item: Habit}) => {
 
+    const {updateHabit} = useHabits();
+
+    const habitColor = {
+        "personal": Colors.light.orange200,
+        "family": Colors.light.blue200,
+        "career": Colors.light.yellow200,
+        "health": Colors.light.purple200,
+        "wellbeing": Colors.light.turquoise200,
+    }
+
+    const selectedColor = habitColor[item.category];
+
+    const onPressHandler = () => {
+        updateHabit({...item, isFinished: !item.isFinished});
+        console.log('you pressed me')
+    };
+
     return (
     <View style={styles.habitItem}>
-        <Text>{item.text}</Text>
+        <View style={[styles.row, item.isFinished ? styles.rowFinished : ""]}>
+            <View style={{...styles.categoryColor, backgroundColor: selectedColor}}></View>
+            <Text style={[styles.text, item.isFinished ? styles.textFinished : ""]}>{item.text}</Text>
+            <View style={[styles.checkbox, item.isFinished ? styles.checkboxFinished : ""]}>
+                <Pressable
+                style={styles.pressable}
+                onPress={onPressHandler}
+                >
+                    <MaterialIcons 
+                    size={24}
+                    name="check"
+                    color={!item.isFinished ? "white" : "green"}
+                    />
+                </Pressable>
+            </View>
+        </View>
     </View>
     )
 }
@@ -14,8 +48,52 @@ export default HabitItem;
 
 const styles = StyleSheet.create({
     habitItem: {
-        padding: 20,
+        overflow: "hidden",
         borderRadius: 10,
-        backgroundColor: 'white'
+        position: "relative",
+    },
+    row: {
+        padding: 20,
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    rowFinished: {
+        backgroundColor: Colors.light.green100
+    },
+    categoryColor: {
+        backgroundColor: "green",
+        width: 6,
+        height: 100,
+        position: "absolute"
+    },
+    red: {
+        backgroundColor: "red"
+    },
+    text: {
+        wordWrap: "break",
+        flex: 1
+    },
+    textFinished: {
+        color: Colors.light.green800
+    },
+    checkbox: {
+        backgroundColor: Colors.light.gray200,
+        borderRadius: 6,
+        height: 50,
+        width: 50,
+        alignSelf: "flex-start"
+    },
+    checkboxFinished: {
+        backgroundColor: Colors.light.green500,
+    },
+    pressable: {
+        display: "flex",
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center"
     }
-})
+});

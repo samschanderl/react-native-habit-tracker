@@ -29,6 +29,7 @@ const TabHeading = ({elements, setElements}: TabHeadingProps) => {
         <View style={styles.tabHeading}>
             {elements && elements.map(el => (
                 <Pressable 
+                key={el.id}
                 style={styles.tabHeadingBtnWrapper}
                 onPress={() => onPressHandler(el.id)}
                 >

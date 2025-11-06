@@ -6,6 +6,7 @@ type HabitProviderProps<T> = {
 
 type HabitContextProps = {
     habits: Habit[],
+    setHabits: React.Dispatch<SetStateAction<Habit[]>>,
     addHabit: (h: Habit) => void,
     deleteHabit: (h: Habit) => void,
     updateHabit: (h: Habit) => void,
@@ -13,7 +14,7 @@ type HabitContextProps = {
     setHabitStatusFilter: React.Dispatch<React.SetStateAction<HabitStatusFilter[]>>
 }
 
-type HabitCategory = "personal" | "career" | "health" | "family";
+type HabitCategory = "personal" | "career" | "health" | "family" | "wellbeing";
 type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
 export type Habit = {
@@ -46,6 +47,12 @@ export const HabitProvider = ({children}: HabitProviderProps<ReactNode>) => {
             text: "Read a story to my children",
             isFinished: false,
             category: "family",
+        },
+        {
+            id: "4",
+            text: "Do 10 minutes of yoga",
+            isFinished: false,
+            category: "health",
         },
     ];
 
@@ -81,6 +88,7 @@ export const HabitProvider = ({children}: HabitProviderProps<ReactNode>) => {
         <HabitContext.Provider
         value={{          
             habits,
+            setHabits,
             addHabit,
             deleteHabit,
             updateHabit,

@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { View, Text, StyleSheet, FlatList, StatusBar } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 import TabHeading from "../components/TabHeading";
 import { useHabits } from "../context/HabitContext";
 import HabitItem from "../components/HabitItem";
-
+import DraggableList from "../components/DraggableList";
 
 export default function Index() {
 
@@ -20,7 +20,8 @@ export default function Index() {
   type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
   const {selectedDates} = useDate();
-  const {habits, habitStatusFilter, setHabitStatusFilter} = useHabits();
+  const {habits, setHabits, habitStatusFilter, setHabitStatusFilter} = useHabits();
+  const memoizedHabits = useMemo(() => habits, [habits]);
 
   const [habitsTabs, setHabitTabs] = useState<string[]>()
 
@@ -29,7 +30,6 @@ export default function Index() {
     text: string,
     isFinished: boolean,
     category: HabitCategory,
-    color: HabitColor
   };
 
   // const [habits, setHabits] = useState<Habit[]>([]);
@@ -47,7 +47,15 @@ export default function Index() {
     return (
       <Button><Text>Test</Text></Button>
     )
-  }
+  };
+
+    const renderHabitItem = useCallback(
+      (item:Habit): React.ReactNode => 
+      <HabitItem 
+      item={item}
+      />
+    , [])
+
 
   return (
     <SafeAreaView style={{flex: 1}} edges={{bottom: "additive"}}>
@@ -68,8 +76,13 @@ export default function Index() {
       elements={habitStatusFilter}
       setElements={setHabitStatusFilter}
       />
+      <DraggableList 
+      data={memoizedHabits}
+      renderDataItem={renderHabitItem}
+        // <View style={{marginVertical: 24, backgroundColor: "red"}}><Text>{item.text}</Text></View>
+      />
       {/* HABIT TRACKER ITEMS */}
-      <View
+      {/* <View
         style={
           {
             flex: 1,
@@ -82,9 +95,8 @@ export default function Index() {
         }}
           data={habits}
           renderItem={(itemData) => <HabitItem item={itemData.item} />}
-        />
-      {/* ADD BUTTON */}
-      </View>
+        /> */}
+      {/* </View> */}
       <View style={styles.btnAddContainer}>
           <Button
           onPress={openGoalsInputModalHandler}
@@ -111,8 +123,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: 'relative',
     paddingHorizontal: 0,
-    marginHorizontal: 20,
-    paddingTop: StatusBar.currentHeight
+    marginHorizontal: 0,
+    paddingTop: StatusBar.currentHeight,
     // backgroundColor: 'red'
   },
   chartPlaceholder: {

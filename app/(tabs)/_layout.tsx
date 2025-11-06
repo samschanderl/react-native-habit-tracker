@@ -34,6 +34,7 @@ export default function TabLayout() {
                         <TabTrigger 
                         key={tab.name}
                         name={tab.name}
+                        href={`/(tabs)/${tab.name}` as any}
                         asChild>
                         <CustomTabButton 
                             name={tab.name}
@@ -52,7 +53,7 @@ export default function TabLayout() {
                     <Text>Progress</Text>
                 </TabTrigger>
                 <TabTrigger name="goals" href="/(tabs)/goals">
-                    <Text>Progress</Text>
+                    <Text>Goals</Text>
                 </TabTrigger>
             </TabList>
         </Tabs>
