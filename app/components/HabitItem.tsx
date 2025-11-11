@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         position: "relative",
     },
     row: {
-        padding: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 18,
         backgroundColor: 'white',
         display: 'flex',
         flexDirection: 'row',
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
     checkbox: {
         backgroundColor: Colors.light.gray200,
         borderRadius: 6,
-        height: 50,
-        width: 50,
+        height: 40,
+        width: 40,
         alignSelf: "flex-start"
     },
     checkboxFinished: {
