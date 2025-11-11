@@ -77,7 +77,7 @@ export default function Index() {
       setElements={setHabitStatusFilter}
       />
       <DraggableList 
-      data={memoizedHabits}
+      data={memoizedHabits as Habit[]}
       renderDataItem={renderHabitItem}
         // <View style={{marginVertical: 24, backgroundColor: "red"}}><Text>{item.text}</Text></View>
       />
