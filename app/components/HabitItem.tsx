@@ -2,10 +2,13 @@ import {View, Text, StyleSheet, Touchable, Pressable} from 'react-native';
 import { Habit, useHabits } from '../context/HabitContext';
 import { Colors } from '../constants/Colors';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useEffect, useState } from 'react';
 
 const HabitItem = ({item}: {item: Habit}) => {
 
-    const {updateHabit} = useHabits();
+    const {updateHabit, habitStatusFilter, activeStatusFilter} = useHabits();
+    const [showHabitItem, setShowHabitItem] = useState<boolean>(false);
+    // let showHabitItem = false;
 
     const habitColor = {
         "personal": Colors.light.orange200,
@@ -22,7 +25,28 @@ const HabitItem = ({item}: {item: Habit}) => {
         console.log('you pressed me')
     };
 
-    return (
+
+    useEffect(() => {
+        setShowHabitItem(false);
+        console.log('has changed:', activeStatusFilter.id, item.isFinished);
+        switch(true) {
+            case activeStatusFilter.id === "open" && !item.isFinished:
+                // showHabitItem = true;
+                setShowHabitItem(true);
+                break;
+            case activeStatusFilter.id === "done" && item.isFinished:
+                // showHabitItem = true;
+                setShowHabitItem(true);
+                break;
+            case activeStatusFilter.id === "all":
+                // showHabitItem = true;
+                setShowHabitItem(true);
+                break;
+        }
+
+    }, [habitStatusFilter, activeStatusFilter, item]);
+
+    if (showHabitItem) return (
     <View style={styles.habitItem}>
         <View style={[styles.row, item.isFinished ? styles.rowFinished : ""]}>
             <View style={{...styles.categoryColor, backgroundColor: selectedColor}}></View>

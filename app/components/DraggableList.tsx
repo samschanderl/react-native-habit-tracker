@@ -47,12 +47,13 @@ export default DraggableList;
 const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         position: 'relative',
         paddingHorizontal: 0,
         marginHorizontal: 20,
-        paddingTop: StatusBar.currentHeight
+        paddingTop: 10,
+        // paddingTop: StatusBar.currentHeight,
         // backgroundColor: 'red'
       },
     rowItem: {

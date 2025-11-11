@@ -11,7 +11,8 @@ type HabitContextProps = {
     deleteHabit: (h: Habit) => void,
     updateHabit: (h: Habit) => void,
     habitStatusFilter: HabitStatusFilter[],
-    setHabitStatusFilter: React.Dispatch<React.SetStateAction<HabitStatusFilter[]>>
+    setHabitStatusFilter: React.Dispatch<React.SetStateAction<HabitStatusFilter[]>>,
+    activeStatusFilter: HabitStatusFilter
 }
 
 type HabitCategory = "personal" | "career" | "health" | "family" | "wellbeing";
@@ -60,7 +61,8 @@ export const HabitProvider = ({children}: HabitProviderProps<ReactNode>) => {
         {id: "open", title: "Open", isActive: true},
         {id: "done", title: "Done", isActive: false},
         {id: "all", title: "All", isActive: false}
-    ])
+    ]);
+    const activeStatusFilter = habitStatusFilter.find(el => el.isActive) as HabitStatusFilter;
     
     const [habits, setHabits] = useState<Habit[]>([]);
 
@@ -93,7 +95,8 @@ export const HabitProvider = ({children}: HabitProviderProps<ReactNode>) => {
             deleteHabit,
             updateHabit,
             habitStatusFilter, 
-            setHabitStatusFilter
+            setHabitStatusFilter,
+            activeStatusFilter
         }}
         >
             {children}

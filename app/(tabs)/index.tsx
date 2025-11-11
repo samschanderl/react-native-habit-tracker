@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { View, Text, StyleSheet, FlatList, StatusBar } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -20,7 +20,7 @@ export default function Index() {
   type HabitColor = "red" | "blue" | "green" | "orange" | "yellow";
 
   const {selectedDates} = useDate();
-  const {habits, setHabits, habitStatusFilter, setHabitStatusFilter} = useHabits();
+  const {habits, setHabits, habitStatusFilter, setHabitStatusFilter, activeStatusFilter} = useHabits();
   const memoizedHabits = useMemo(() => habits, [habits]);
 
   const [habitsTabs, setHabitTabs] = useState<string[]>()
@@ -49,12 +49,17 @@ export default function Index() {
     )
   };
 
-    const renderHabitItem = useCallback(
-      (item:Habit): React.ReactNode => 
-      <HabitItem 
-      item={item}
-      />
-    , [])
+  const renderHabitItem = useCallback(
+    (item:Habit): React.ReactNode => 
+    <HabitItem 
+    item={item}
+    />
+  , []);
+
+  // update shown
+  useEffect(() => {
+
+  }, []);;
 
 
   return (
@@ -77,7 +82,7 @@ export default function Index() {
       setElements={setHabitStatusFilter}
       />
       <DraggableList 
-      data={memoizedHabits as Habit[]}
+      data={habits as Habit[]}
       renderDataItem={renderHabitItem}
         // <View style={{marginVertical: 24, backgroundColor: "red"}}><Text>{item.text}</Text></View>
       />
